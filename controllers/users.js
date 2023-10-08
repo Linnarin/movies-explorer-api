@@ -111,13 +111,13 @@ const updateUser = (req, res, next) => {
       }
     })
     .catch((err) => {
-      if (err.name === 'CastError') {
+      if (err.name === 'ValidationError') {
         next(
-          new BadRequestError('Переданы некорректные данные при обновлении профиля'),
+          new BadRequestError('Переданы некорректные данные при обновлении пользователя.'),
         );
-      } else if (err.name === 'ValidationError') {
+      } else if (err.code === 11000) {
         next(
-          new BadRequestError('Переданы некорректные данные при обновлении профиля'),
+          new ConflictError('Пользователь с таким email уже существует'),
         );
       } else {
         next(err);
